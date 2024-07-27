@@ -5,7 +5,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [result, setResult] = useState(false);
-  const [output, setOutput] = useState('')
+  const [error, setError] = useState('');
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -17,10 +17,15 @@ function App() {
 
   const handleResult = (e) => {
     e.preventDefault();
+    if (username === "" || password === "") {
+      setError("Username and password cannot be empty");
+      return;
+    }
     if (username === "user" && password === "password") {
       setResult(true);
+      setError('');
     } else {
-      setOutput(output => "Invalid username or password")
+      setError("Invalid username or password");
     }
   }
 
@@ -28,9 +33,8 @@ function App() {
     <div>
       <h1>Login Page</h1>
       {(!result) ? (
-        <div> {output}
-        <br/>
         <form onSubmit={handleResult}>
+          {error && <p>{error}</p>}
           <label>
             Username:
             <input
@@ -55,7 +59,6 @@ function App() {
           <br/>
           <button type="submit">Submit</button>
         </form>
-        </div>
       ) : (
         <p>Welcome, user!</p>
       )}
